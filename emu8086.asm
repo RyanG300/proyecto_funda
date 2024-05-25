@@ -154,12 +154,12 @@ modo_juego:
     limpiar_pantalla
     imprimir_pantallas pantalla_modo_juego
     mov ah,08h
-    int 21h
-    cmp al,1
+    int 21h                         ; Espera a que el usuario presione una tecla
+    cmp al, '1'                     ; Compara con el valor ASCII del caracter '1' (49)
     je jvsj
-    cmp al,2
+    cmp al, '2'                     ; Compara con el valor ASCII del caracter '2' (50)
     je jvsm
-    cmp al,3
+    cmp al, '3'                     ; Compara con el valor ASCII del caracter '3' (51)
     je juego_rapido
 
 jvsj:
