@@ -21,7 +21,7 @@ include "emu8086.inc"
     
     jugador1_msj db 'Jugador 1: ',10,13,"$"
     jugador2_msj db 'Jugador 2: ',10,13,"$"
-    nuevalinea db 10, 13, '$' 
+    nuevalinea db 10,13,'$' 
 
 ;-------------------opcion tiempo-------------------
 
@@ -41,18 +41,19 @@ include "emu8086.inc"
     
 ;------------------------numero----------------------
     
-    num1 db "Jugador 1 ingresa un numero(1-20): $",10,13 
-    num2 db "Jugador 2 ingresa un numero(1-20): $",10,13
+    num1 db "Jugador 1 ingresa un numero(1-10): $",10,13 
+    num2 db "Jugador 2 ingresa un numero(1-10): $",10,13
     error_msg db 13, 10, "Numero fuera de rango, intente de nuevo$"  
     numero db 0
-    buffer3 db 5  dup(?)                          ; buffer para el numero ingresado por el jugador 1
-    buffer4 db 3, 0, 3 dup(0)                     ; buffer para el numero adivinado por el jugador 2
-    buffer5 db 3, 0, 3 dup(0)                     ; buffer para el numero ingresado por el jugador 2
+    buffer3 db 5  dup(?),"$"                        ; buffer para el numero ingresado por el jugador 1 en tiempo
+    buffer4 db 3, 0, 3 dup(?)                     ; buffer para el numero adivinado por el jugador 2
+    buffer5 db 3, 0, 3 dup(?)                     ; buffer para el numero ingresado por el jugador 2  en tiempo
+    buffer6 db 3, 0, 3 dup(?)                     ;buffer para el numero ingresado por el jugador 1 en intentos
     
-    seleccion2 db 'Jugador 2, elija un número del 1 al 20:', '$',10,13
+    seleccion2 db 'Jugador 2, elija un numero del 1 al 10: $',,10,13
     incorrecto_msg db 'Incorrecto. Intente nuevamente.', '$'
-    pantalla_numeros db 'Los números del 1 al 20 son:', '$'
-    tabla_numeros db '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20$', '$' 
+    pantalla_numeros db 'Los numeros del 1 al 10 son:', '$'
+    tabla_numeros db "1 2 3 4 5 6 7 8 9 10","$",,10,13 
     numero_jugador1 dw 0                          ; almacenar el número elegido por el jugador 1
     
 ;---------------jugador vs maquina-----------------
@@ -157,28 +158,28 @@ pantalla_juego_rapido dw " ",10,13
 ;-------------pantalla jugador vs jugador-------------
 
 pantalla_jugador_vs_jugador dw " ",10,13
-    dw "                                  ____    _  _  ___     ____                ",0ah,0dh
-    dw "                                 (_  _)  ( \/ )/ __)   (_  _)               ",0ah,0dh
-    dw "                                .-_)(     \  / \__ \  .-_)(                 ",0ah,0dh
-    dw " ---------------------          \____)     \/  (___/  \____)                ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }                                                     ",0ah,0dh
-    dw "{                     }     ___________     ___________     ___________     ",0ah,0dh
-    dw "{                     }    {           }   {           }   {           }    ",0ah,0dh
-    dw "{                     }    {           }   {           }   {           }    ",0ah,0dh
-    dw "{                     }    { Rendirse  }   { Reiniciar }   {   Salir   }    ",0ah,0dh
-    dw "{                     }    {           }   {           }   {           }    ",0ah,0dh
-    dw " ---------------------     {___________}   {___________}   {___________}    ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                        ____    _  _  ___     ____                          ",0ah,0dh
+    dw "                       (_  _)  ( \/ )/ __)   (_  _)                         ",0ah,0dh
+    dw "                      .-_)(     \  / \__ \  .-_)(                           ",0ah,0dh
+    dw "                      \____)     \/  (___/  \____)                          ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                ___________     ___________     ___________                 ",0ah,0dh
+    dw "               {           }   {           }   {           }                ",0ah,0dh
+    dw "               {           }   {           }   {           }                ",0ah,0dh
+    dw "               { Rendirse  }   { Reiniciar }   {   Salir   }                ",0ah,0dh
+    dw "               {           }   {           }   {           }                ",0ah,0dh
+    dw "               {___________}   {___________}   {___________}                ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
+    dw "                                                                            ",0ah,0dh
     dw "$",0ah,0dh
 
 ;------------pantalla jugador vs maquina---------------
@@ -461,9 +462,10 @@ intentos_proceso macro
     mov tiempo_o_intentos,2                               ;Ponemos un dos en "tiempo_o_intentos", esto sera un indicativo para que el algoritmo sepa que hacer   
     limpiar_pantalla
 endm     
-       
-    
-    
+
+;------------------------------------------------------------------
+      
+color_red equ 4C0h                                        ; Atributo de color rojo    
 
 ;------------------------menu principal----------------------------
     
@@ -566,7 +568,7 @@ invalidar_numero:
     mov ah, 09h
     int 21h
     call esperar_3_segundos           ; espera 3 segundos
-    jmp numero2                       ; Saltar al inicio para volver a pedir el numero
+    jmp numero1                       ; Saltar al inicio para volver a pedir el numero
 
 ;---------Leer una cadena de entrada desde el teclado-----------
 
@@ -595,16 +597,16 @@ validar_numero proc
         mov ah, 0
         mov cx, 10
         mul cx                        ; Multiplicar BX por 10
-        add bx, ax                        ; Acumular el valor
+        add bx,ax
         inc si
         jmp convertir_loop
 
     check_range:
         cmp bx, 1
         jb invalidar_numero           ; Si el numero es menor que 1, ir a invalidar_numero
-        cmp bx, 20
-        ja invalidar_numero           ; Si el numero es mayor que 20, ir a invalidar_numero
-        jmp input_name_jugador1
+        cmp bx, 10
+        ja invalidar_numero           ; Si el numero es menor que 1, ir a invalidar_numero
+        jmp input_name_jugador2
         ret 
          
 validar_numero endp
@@ -613,6 +615,7 @@ validar_numero endp
 ;---------------------------JUGADOR 2-----------------------------
    
 input_name_jugador2:
+
     limpiar_pantalla   
 
 ;-------muestra el mensaje para el nickname del jugador 2---------
@@ -647,10 +650,11 @@ input_name_jugador2:
     lea dx, buffer2+2                ; muestra el nickname ingresado
     mov ah, 9
     int 21h
-    call mostrar_numeros             ; Mostrar numeros del 1 al 20
-    jmp seleccion_jugador2           ; Saltar a la selección del jugador 2
+    imprimir_pantallas nuevalinea
+    call mostrar_numeros             ; Mostrar numeros del 1 al 10
+    jmp seleccion_jugador2           ; Saltar a la seleccion del jugador 2
 
-;----------------muestra los numeros del 1-20---------------------
+;----------------muestra los numeros del 1-10---------------------
 
 mostrar_numeros proc
     lea dx, pantalla_numeros
@@ -658,7 +662,7 @@ mostrar_numeros proc
     int 21h
     lea si, tabla_numeros
     
-    mov cx, 20                     ; Inicializar contador
+    mov cx, 10                     ; Inicializar contador
 mostrar_loop:
     lodsb
     mov dl, al
@@ -677,6 +681,7 @@ mostrar_numeros endp
 ;----------------------Jugador 2 elige un numero------------------
 
 seleccion_jugador2:
+    imprimir_pantallas nuevalinea
     lea dx, seleccion2
     mov ah, 09h
     int 21h
@@ -707,28 +712,27 @@ validar_numero2 proc
         sub al, '0'                   ; Convertir de ASCII a binario
         mov ah, 0
         mov cx, 10
-        mul bx                        ; Multiplicar BX por 10
+        mul cx                        ; Multiplicar BX por 10
         add bx, ax                    ; Acumular el valor
+        cmp bx, numero_jugador1
         inc si
         jmp convertir_loop2
     
     check_range2:
-        cmp bx, 1
-        jb invalidar_numero           ; Si el número es menor que 1, ir a invalidar_numero
-        cmp bx, 20
-        ja invalidar_numero           ; Si el número es mayor que 20, ir a invalidar_numero
-        cmp bx, numero_jugador1       ; Comprobar si el número es igual al seleccionado por el jugador 1
+        cmp bx, numero_jugador1       ; Comprobar si el numero es igual al seleccionado por el jugador 1
         je numero_correcto
         jmp numero_incorrecto
         ret
          
 validar_numero2 endp
 
+;----------------------numero correcto o incorrecto---------------
+
 numero_correcto:
     limpiar_pantalla
     imprimir_pantallas pantalla_gana_jugador2 
     call esperar_3_segundos
-    jmp salir
+    jmp menu_principal
     ret
 
 numero_incorrecto:
@@ -737,8 +741,9 @@ numero_incorrecto:
     mov ah, 09h
     int 21h
     call esperar_3_segundos
-    jmp seleccion_jugador2
+    jmp salir 
     ret
+
     
 ;-----------------------el usuario elije un numero----------------
 
@@ -791,20 +796,44 @@ validar_numero_3 proc
         mov cx, 10
         mul cx                        ; Multiplicar BX por 10
         add bx, ax                        ; Acumular el valor
+        cmp bx, 1
+        jb invalidar_numero_3           ; Si el numero es menor que 1, ir a invalidar_numero
+        cmp bx, 10
+        ja invalidar_numero_3           ; Si el numero es mayor que 10, ir a invalidar_numero
+        jmp juego_jugador1
         inc si
         jmp convertir_loop_3
 
     check_range_3:
         cmp bx, 1
         jb invalidar_numero_3           ; Si el numero es menor que 1, ir a invalidar_numero
-        cmp bx, 20
-        ja invalidar_numero_3           ; Si el numero es mayor que 20, ir a invalidar_numero
-        jmp input_name_jugador1
+        cmp bx, 10
+        ja invalidar_numero_3           ; Si el numero es mayor que 10, ir a invalidar_numero
+        jmp juego_jugador1
         ret 
          
 validar_numero_3 endp
 
+
+juego_jugador1:
+
+;---------------muestra el mensaje de "Jugador1:"----------------- 
     
+    limpiar_pantalla
+    imprimir_pantallas pantalla_jugador_vs_jugador
+    lea dx, jugador1_msj
+    mov ah, 9
+    int 21h
+        
+;---------------muestra el nickname del usuario-------------------- 
+
+    lea dx, buffer1+2                ; muestra el nickname ingresado
+    mov ah, 9
+    int 21h
+    call esperar_3_segundos          ;espera 3 segundos
+    jmp numero1  
+
+     
     
 ;-----------------------------INTENTOS-----------------------------
  
@@ -843,7 +872,68 @@ input_name_jugador1_2:
     mov ah, 9
     int 21h
     call esperar_3_segundos          ;espera 3 segundos
-    jmp input_name_jugador2_1  
+    jmp numero3  
+
+;-----------------------el usuario elije un numero----------------
+
+numero3: 
+
+    limpiar_pantalla
+    lea dx, num1
+    mov ah, 09h
+    int 21h
+    call leer_numero                  ; lee el numero ingresado
+    jmp input_name_jugador2_1           ; si el numero es valido, continua
+
+;----------------------mensaje de error-------------------------
+invalidar_numero_4:
+    limpiar_pantalla
+    lea dx, error_msg
+    mov ah, 09h
+    int 21h
+    call esperar_3_segundos           ; espera 3 segundos
+    jmp numero3                       ; Saltar al inicio para volver a pedir el numero
+
+;---------Leer una cadena de entrada desde el teclado-----------
+
+leer_numero_4 proc
+    
+    lea dx, buffer6
+    mov ah, 0Ah                       ; funcion para leer entrada de cadena
+    int 21h
+    je validar_numero_4
+    ret   
+    
+leer_numero_4 endp
+
+;---------Convertir cadena de entrada a numero binario----------
+
+validar_numero_4 proc
+    lea si, buffer6+2                 ; Saltar longitud y primer byte de buffer
+    xor bx, bx                        ; Limpiar BX para acumular el valor
+    xor dx, dx                        ; Limpiar DX para multiplicacion
+
+    convertir_loop_4:
+        mov al, [si]
+        cmp al, 0Dh                   ; Comprobar si es el terminador de linea (Enter)
+        je check_range_4
+        sub al, '0'                   ; Convertir de ASCII a binario
+        mov ah, 0
+        mov cx, 10
+        mul cx                        ; Multiplicar BX por 10
+        add bx,ax
+        inc si
+        jmp convertir_loop_4
+
+    check_range_4:
+        cmp bx, 1
+        jb invalidar_numero_4           ; Si el numero es menor que 1, ir a invalidar_numero
+        cmp bx, 10
+        ja invalidar_numero_4           ; Si el numero es menor que 10, ir a invalidar_numero
+        jmp input_name_jugador2_1
+        ret 
+         
+validar_numero_4 endp
 
 ;---------------------------JUGADOR 2-----------------------------
    
@@ -890,7 +980,163 @@ input_name_jugador2_1:
     call esperar_3_segundos          ;espera 3 segundos
     jmp salir  
 
+;----------------muestra los numeros del 1-10---------------------
 
+mostrar_numeros_5 proc
+    lea dx, pantalla_numeros
+    mov ah, 09h
+    int 21h
+    lea si, tabla_numeros
+    
+    mov cx, 10                     ; Inicializar contador
+mostrar_loop_5:
+    lodsb
+    mov dl, al
+    mov ah, 02h
+    int 21h
+    cmp cx, 10
+    jne no_space_5
+    mov dl, ' '
+    mov ah, 02h
+    int 21h
+no_space_5:
+    loop mostrar_loop_5
+    ret
+mostrar_numeros_5 endp
+
+;----------------------Jugador 2 elige un numero------------------
+
+seleccion_jugador_6:
+    imprimir_pantallas nuevalinea
+    lea dx, seleccion2
+    mov ah, 09h
+    int 21h
+    call leer_numero_6
+    ret
+
+;---------Leer una cadena de entrada desde el teclado-----------
+
+leer_numero_6 proc
+    lea dx, buffer4
+    mov ah, 0Ah                       ; funcion para leer entrada de cadena
+    int 21h
+    call validar_numero_6              ; Llama a validar_numero2 despues de leer la entrada
+    ret
+leer_numero_6 endp
+
+;---------Convertir cadena de entrada a numero binario----------
+
+validar_numero_6 proc
+    lea si, buffer4+2                 ; Saltar longitud y primer byte de buffer
+    xor bx, bx                        ; Limpiar BX para acumular el valor
+    xor dx, dx                        ; Limpiar DX para multiplicación
+
+    convertir_loop_6:
+        mov al, [si]
+        cmp al, 0Dh                   ; Comprobar si es el terminador de linea (Enter)
+        je check_range_6
+        sub al, '0'                   ; Convertir de ASCII a binario
+        mov ah, 0
+        mov cx, 10
+        mul cx                        ; Multiplicar BX por 10
+        add bx, ax                    ; Acumular el valor
+        cmp bx, numero_jugador1
+        inc si
+        jmp convertir_loop_6
+    
+    check_range_6:
+        cmp bx, numero_jugador1       ; Comprobar si el numero es igual al seleccionado por el jugador 1
+        je numero_correcto_2
+        jmp numero_incorrecto_2
+        ret
+         
+validar_numero_6 endp
+
+;----------------------numero correcto o incorrecto---------------
+
+numero_correcto_2:
+    limpiar_pantalla
+    imprimir_pantallas pantalla_gana_jugador2 
+    call esperar_3_segundos
+    jmp menu_principal
+    ret
+
+numero_incorrecto_2:
+    limpiar_pantalla
+    lea dx, incorrecto_msg
+    mov ah, 09h
+    int 21h
+    call esperar_3_segundos
+    jmp salir 
+    ret
+
+;-----------------------el usuario elije un numero----------------
+
+numero4: 
+
+    limpiar_pantalla
+    lea dx, num2
+    mov ah, 09h
+    int 21h
+    call leer_numero_7                  ; lee el numero ingresado
+    jmp input_name_jugador1           ; si el numero es valido, continua
+
+;----------------------mensaje de error---------------------------
+
+invalidar_numero_7:
+
+    limpiar_pantalla
+    lea dx, error_msg
+    mov ah, 09h
+    int 21h
+    call esperar_3_segundos           ; espera 3 segundos
+    jmp numero4                       ; Saltar al inicio para volver a pedir el numero
+
+;---------Leer una cadena de entrada desde el teclado-----------
+
+leer_numero_7 proc
+    
+    lea dx, buffer5
+    mov ah, 0Ah                       ; funcion para leer entrada de cadena
+    int 21h
+    je validar_numero_7
+    ret   
+    
+leer_numero_7 endp
+
+;---------Convertir cadena de entrada a numero binario----------
+
+validar_numero_7 proc
+    
+    lea si, buffer5+2                 ; Saltar longitud y primer byte de buffer
+    xor bx, bx                        ; Limpiar BX para acumular el valor
+    xor dx, dx                        ; Limpiar DX para multiplicacion
+
+    convertir_loop_7:
+        mov al, [si]
+        cmp al, 0Dh                   ; Comprobar si es el terminador de linea (Enter)
+        je check_range_7
+        sub al, '0'                   ; Convertir de ASCII a binario
+        mov ah, 0
+        mov cx, 10
+        mul cx                        ; Multiplicar BX por 10
+        add bx, ax                        ; Acumular el valor
+        cmp bx, 1
+        jb invalidar_numero_7           ; Si el numero es menor que 1, ir a invalidar_numero
+        cmp bx, 10
+        ja invalidar_numero_7           ; Si el numero es mayor que 10, ir a invalidar_numero
+        inc si
+        jmp convertir_loop_7
+
+    check_range_7:
+        cmp bx, 1
+        jb invalidar_numero_7           ; Si el numero es menor que 1, ir a invalidar_numero
+        cmp bx, 10
+        ja invalidar_numero_7           ; Si el numero es mayor que 10, ir a invalidar_numero
+        jmp salir
+        ret 
+         
+validar_numero_7 endp
    
 ;-----------------------JUGADOR VS MAQUINA------------------------
 
@@ -1338,7 +1584,7 @@ reiniciar:
           
           
 salir:
-.exit      
+.exit     
 
 
 
